@@ -10,7 +10,13 @@
         <div>
            <p>Paragrafo primeiro e teste</p> 
             <section>
-                <form action="/submit" method="post" enctype="multipart/form-data">
+                <form action="/input" method="post" enctype="multipart/form-data">
+                    <input type="radio" name="maquina" value="Maquina 1">
+                    <label for="maquina 1">Maquina 1</label>
+                    <input type="radio" name="maquina" value="Maquina 2">
+                    <label for="maquina 2">Maquina 2</label>
+                    <input type="radio" name="maquina" value="Maquina 3">
+                    <label for="maquina 1">Maquina 3</label>
                     <p>Adicione seu arquivo aqui</p>
                     <input type="file" name="input_file" placeholder="Select a file">
                     <button type="submit">Enviar arquivo</button>
@@ -18,4 +24,5 @@
             </section>
         </div>
     </body>
+    <script src="./index.js"></script>
 </html>

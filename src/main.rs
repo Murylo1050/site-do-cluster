@@ -2,37 +2,42 @@
 // use rocket::form::Form;
 
 
+
 use std::path::Path;
 // use rocket::fs::FileName; 
-use std::fs::read_to_string;
-use rocket::fs::{relative, TempFile};
-use rocket::response::content::RawHtml;
+// use std::fs::read_to_string;
+use rocket::fs::{relative, TempFile, FileServer};
+// use rocket::response::content::RawHtml;
 use rocket::form::Form;
-// use rocket::response::Redirect;
-#[post("/submit", format = "multipart/form-data", data = "<file>")]
-async fn form(mut  file : Form<TempFile<'_>>) -> std::io::Result<()>{
-    // let path = Path::new("~");
-    // let mut pathbuf = path.join("teste");
-    // pathbuf.push("fileSite");
-    // pathbuf.push(file.name().expect("deu merda no arquivo"));
-    // pathbuf.set_extension("txt");
-    let mut path: String = "/home/murylo1050/teste/fileSite/".to_string();
-    path.push_str(file.name().expect("deu merda no arquivo")); 
-    path.push_str(".txt");
-    file.copy_to(Path::new(&path)).await?;
-    // println!("\n\n\n\n\n Path: {}", pathbuf.display());
+use rocket::response::Redirect;
+#[derive(FromForm)]
+struct UploadUser<'f>{
+    
+    maquina: String,
+    input_file: TempFile<'f>,
 
-    // file.copy_to(pathbuf).await.ok();
-    // Redirect::to("/");
-    Ok(())
-                                                                                                                                                                                                                                                                                                  
+}
+
+
+
+
+#[post("/input", format = "multipart/form-data", data = "<form_input>")]
+async fn form(mut  form_input : Form<UploadUser<'_>>) -> Redirect {
+    let mut path: String = "/home/murylo1050/teste/fileSite/".to_string();
+    path.push_str(form_input.input_file.name().expect("deu merda no arquivo")); 
+    path.push_str(".txt");
+    
+    let maquina = &form_input.maquina;
+    println!("Raw name {}", maquina);
+    form_input.input_file.move_copy_to(Path::new(&path)).await.ok();
+   
+    Redirect::to(uri!("/"))
 }
 #[get("/")]
-fn index() -> RawHtml<String>{
-
-    RawHtml(read_to_string(relative!("src/static/index.html")).expect("transa")) 
+fn index() -> Redirect/* RawHtml<String> */{
+     Redirect::to(uri!("/index.html"))
 }
 
 #[launch]
 fn rocket()-> _{
-    rocket::build().mount("/", routes![index,form])}
+    rocket::build().mount("/", routes![index,form]).mount("/", FileServer::from(relative!("static")))}
