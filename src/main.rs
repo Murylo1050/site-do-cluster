@@ -10,15 +10,19 @@ use rocket::response::content::RawHtml;
 use rocket::form::Form;
 // use rocket::response::Redirect;
 #[post("/submit", format = "multipart/form-data", data = "<file>")]
-async fn form(mut file : Form<TempFile<'_>>) -> std::io::Result<()>{
-    let path = Path::new("~");
-    let mut pathbuf = path.join("teste");
-    pathbuf.push("fileSite");
-    pathbuf.push(file.name().expect("deu merda no arquivo"));
-    pathbuf.set_extension("txt");
+async fn form(mut  file : Form<TempFile<'_>>) -> std::io::Result<()>{
+    // let path = Path::new("~");
+    // let mut pathbuf = path.join("teste");
+    // pathbuf.push("fileSite");
+    // pathbuf.push(file.name().expect("deu merda no arquivo"));
+    // pathbuf.set_extension("txt");
+    let mut path: String = "/home/murylo1050/teste/fileSite/".to_string();
+    path.push_str(file.name().expect("deu merda no arquivo")); 
+    path.push_str(".txt");
+    file.copy_to(Path::new(&path)).await?;
     // println!("\n\n\n\n\n Path: {}", pathbuf.display());
 
-    file.copy_to(pathbuf).await.ok();
+    // file.copy_to(pathbuf).await.ok();
     // Redirect::to("/");
     Ok(())
                                                                                                                                                                                                                                                                                                   
