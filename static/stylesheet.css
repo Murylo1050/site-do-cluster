@@ -1,6 +1,26 @@
 section{
+
     align-content: center;
-    color: grey;
     border-radius: 50px;
-    
+    border-radius: 10px;
+    height: fit-content;
+    background-color: #a3a8a5;
+    padding: 10px;
+    box-shadow: 2px 2px 5px black;
+}
+
+.conteiner{
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+body{
+	height:100%;
+}
+
+html{
+	height: 100%;
 }
